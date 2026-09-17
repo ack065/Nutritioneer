@@ -1,0 +1,104 @@
+### Nutritioneer - click the green arrows in IntelliJ, top to bottom.
+### The token from step 2 is captured into a variable and reused.
+
+@host = http://localhost:8080
+
+### 1. Register a fresh account (409 if you run it twice - that is correct)
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{ "email": "test.user@example.com", "username": "test_user", "password": "testPass@1" }
+
+### 2. Log in as a seeded account
+# @name login
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "marija.trajkovska@gmail.com", "password": "testPass@1" }
+
+> {% client.global.set("token", response.body.token); %}
+
+### 3. The public feed
+GET {{host}}/api/posts/feed
+Authorization: Bearer {{token}}
+
+### 4. UC1001 - create a recipe. No kcal is sent; the server derives it.
+# @name newRecipe
+POST {{host}}/api/recipes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Test Bean Stew",
+  "guide": "1. Boil the beans.\n2. Fry the onion.\n3. Combine and bake.",
+  "servings": 4,
+  "ingredients": [
+    { "ingredientName": "Dry white beans", "quantity": 400 },
+    { "ingredientName": "Onion", "quantity": 150 },
+    { "ingredientName": "Olive oil", "quantity": 30 }
+  ],
+  "restrictionIds": []
+}
+
+> {% client.global.set("recipeId", response.body.id); %}
+
+### 5. UC1004 - share it. Running this twice returns 409 (uq_post_recipe).
+POST {{host}}/api/posts
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "recipeId": {{recipeId}}, "isPrivate": false, "isFavourite": false, "status": "published" }
+
+### 6. UC1002 - log a meal (attach post id 1 from the seed data)
+POST {{host}}/api/planner
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "notes": "Smoke test lunch", "postIds": [1], "consumed": true }
+
+### 7. Daily totals
+GET {{host}}/api/planner/daily?from=2026-01-20&to=2026-02-05
+Authorization: Bearer {{token}}
+
+### 8. UC1003 - grocery list from a recipe plus one item
+POST {{host}}/api/grocery-lists
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notes": "Smoke test list",
+  "bulkRecipeIds": [1],
+  "singleItems": [{ "ingredientName": "Apple", "buyQuantity": 1000 }]
+}
+
+### 9. Biometrics
+POST {{host}}/api/biometrics
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "date": "2026-02-02", "weight": 72.0, "height": 168, "age": 29, "muscleFatRatio": 1.97 }
+
+### 10. Should be 403 - a regular user is not an administrator
+GET {{host}}/api/admin/accounts
+Authorization: Bearer {{token}}
+
+### 11. Log in as the trainer
+# @name trainerLogin
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "viktor.ilievski@nutritioneer.mk", "password": "testPass@1" }
+
+> {% client.global.set("trainerToken", response.body.token); %}
+
+### 12. UC3001 - client weekly intake
+GET {{host}}/api/trainer/clients/marija.trajkovska@gmail.com/intake?from=2026-01-22&to=2026-01-29
+Authorization: Bearer {{trainerToken}}
+
+### 13. UC3004 - protein density ranking
+GET {{host}}/api/trainer/analysis/nutrient-density?nutrient=Protein&limit=5
+Authorization: Bearer {{trainerToken}}
+
+### 14. UC3003 - feed filtered by restriction
+GET {{host}}/api/posts/feed/by-restriction?type=gluten_free&avoid=Contains tree nuts
+Authorization: Bearer {{trainerToken}}

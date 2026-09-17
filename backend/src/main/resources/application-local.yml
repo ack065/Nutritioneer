@@ -1,0 +1,8 @@
+# Local development against the Docker database instead of the faculty
+# server. Activate with:  --spring.profiles.active=local
+# or in IntelliJ: Run > Edit Configurations > Active profiles: local
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/nutritioneer
+    username: postgres
+    password: postgres

@@ -1,0 +1,23 @@
+# OPTIONAL - local database for working offline, without the faculty tunnel.
+# Runs on 5433 so it cannot collide with a PostgreSQL service installed on
+# Windows (which holds 5432). Use it with the Spring profile "local".
+#   docker compose up -d
+#   run the app with --spring.profiles.active=local
+services:
+  db:
+    image: postgres:16
+    container_name: nutritioneer-db
+    environment:
+      POSTGRES_DB: nutritioneer
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - nutritioneer-data:/var/lib/postgresql/data
+      # Both scripts run automatically the first time the volume is created,
+      # in filename order. Delete the volume to reload them.
+      - ./sql:/docker-entrypoint-initdb.d:ro
+
+volumes:
+  nutritioneer-data:

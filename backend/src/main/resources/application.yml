@@ -1,0 +1,54 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: nutritioneer
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:9999/db_202526z_prj_nutritioneer}
+    username: ${DB_USER:db_202526z_prj_nutritioneer_owner}
+    password: ${DB_PASSWORD:4da5d69c3fc5}
+    hikari:
+
+      maximum-pool-size: ${DB_POOL_SIZE:5}
+      minimum-idle: 1
+      max-lifetime: 300000          # 5 min, shorter than most SSH idle timeouts
+      idle-timeout: 120000
+      connection-timeout: 10000
+      validation-timeout: 5000
+      keepalive-time: 60000
+
+  jpa:
+    hibernate:
+      # The schema is owned by the SQL scripts in /sql, never by Hibernate.
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        default_schema: ${DB_SCHEMA:public}
+        jdbc:
+          time_zone: UTC
+    show-sql: ${SHOW_SQL:false}
+
+  jackson:
+    default-property-inclusion: non_null
+
+app:
+  jwt:
+    # Override in production. Must be at least 32 bytes for HS256.
+    secret: ${JWT_SECRET:change-me-in-production-this-is-a-dev-only-secret-key}
+    expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
+
+logging:
+  level:
+    mk.finki.nutritioneer: DEBUG

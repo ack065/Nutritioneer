@@ -1,0 +1,67 @@
+:root {
+  --bg: #16181a;
+  --card: #1f2224;
+  --line: #33383b;
+  --text: #e6e6e6;
+  --muted: #9aa0a6;
+  --accent: #8cc152;
+  --warn: #e0a33e;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app { max-width: 1000px; margin: 0 auto; padding: 24px 16px 64px; }
+
+header.top {
+  display: flex; align-items: baseline; gap: 12px;
+  border-bottom: 1px solid var(--line); padding-bottom: 12px; margin-bottom: 16px;
+}
+header.top h1 { margin: 0; font-size: 20px; color: var(--accent); }
+header.top .who { margin-left: auto; color: var(--muted); font-size: 14px; }
+
+nav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+nav button {
+  background: var(--card); color: var(--text); border: 1px solid var(--line);
+  padding: 7px 13px; border-radius: 6px; cursor: pointer; font-size: 14px;
+}
+nav button.active { border-color: var(--accent); color: var(--accent); }
+
+.card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 8px; padding: 14px; margin-bottom: 12px;
+}
+.card h3 { margin: 0 0 8px; font-size: 15px; }
+
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.muted { color: var(--muted); font-size: 13px; }
+.kcal { color: var(--warn); font-weight: 600; }
+
+input, select, textarea {
+  background: #14171a; color: var(--text); border: 1px solid var(--line);
+  border-radius: 6px; padding: 7px 9px; font-size: 14px; font-family: inherit;
+}
+button.primary {
+  background: var(--accent); color: #11210a; border: none;
+  padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600;
+}
+button.small {
+  background: transparent; color: var(--muted); border: 1px solid var(--line);
+  padding: 4px 8px; border-radius: 5px; cursor: pointer; font-size: 12px;
+}
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 500; }
+
+.error {
+  background: #3b1f1f; border: 1px solid #7a3b3b; color: #f0b5b5;
+  padding: 9px 12px; border-radius: 6px; margin-bottom: 12px; font-size: 14px;
+}
+.stack { display: flex; flex-direction: column; gap: 8px; max-width: 420px; }
