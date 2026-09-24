@@ -24,3 +24,8 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Credentials and local tooling - never commit
+tunnel_scripta.cmd
+*.ppk
+plink.exe

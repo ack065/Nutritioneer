@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../lib/api.js'
 
-/** UseCase1001 (create a recipe) and UseCase1004 (share it as a post). */
 export default function Recipes() {
   const [mine, setMine] = useState([])
   const [catalog, setCatalog] = useState([])

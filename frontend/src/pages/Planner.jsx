@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../lib/api.js'
 
-/** UseCase1002 - log a meal and see the daily totals. */
 export default function Planner() {
   const [entries, setEntries] = useState([])
   const [feed, setFeed] = useState([])

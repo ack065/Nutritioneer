@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../lib/api.js'
 
-/** UseCase3001, 3002 and 3004. Read-only by design: see TrainerController. */
 export default function Trainer() {
   const [email, setEmail] = useState('marija.trajkovska@gmail.com')
   const [from, setFrom] = useState('2026-01-20')

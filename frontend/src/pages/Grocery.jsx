@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../lib/api.js'
 
-/** UseCase1003 - bulk-add recipes plus individual items, then consolidate. */
 export default function Grocery() {
   const [lists, setLists] = useState([])
   const [recipes, setRecipes] = useState([])
